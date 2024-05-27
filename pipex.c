@@ -12,7 +12,28 @@
 
 #include "pipex.h"
 
-int	main(int argc, char **argv)
+char	*child_process(int *p_fd, char **argv)
+{
+	int	fd;
+
+	fd = open(p_fd[0], O_RDONLY)	
+	dup2(fd, STDIN_FILENO);
+	close(p_fd[0]);
+	close(p_fd[1]);
+}
+
+char	*parent_process(int *p_fd, char **argv)
+{
+	int	fd;
+	
+	fd = open(p_fd[1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	dup2(fd, STDOUT_FILENO);
+	close(p_fd);
+	close(p_fd[0]);
+
+}
+
+int	main(int argc, char **argv, char **env)
 {
 	int		p_fd[2];
 	pid_t	pid;
@@ -32,9 +53,9 @@ int	main(int argc, char **argv)
 		exit(-1);
 	pid = fork();
 	if (pid == -1)
-		exit (-1);
+		exit(-1);
 	if (pid == 0)
-	{
-		
-	}
+		child_process(p_fd, argv);
+	else if (pid != 0)
+		parent_process(p_fd, argv);
 }

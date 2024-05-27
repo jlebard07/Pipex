@@ -24,7 +24,7 @@ int	count_split(char **argv)
 
 }
 
-void	free(char **argv)
+void	free_argv(char **argv)
 {
 	int	i;
 
