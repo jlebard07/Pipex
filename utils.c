@@ -84,7 +84,7 @@ char	*get_path(char	*cmd, char **env)
 		temp_exec = ft_strjoin(exec_repo[i], "/");
 		exec = ft_strjoin(temp_exec, cmd_searched[0]);
 		free(temp_exec);
-		if (acess(exec, F_OK | X_OK) == 0)
+		if (access(exec, F_OK | X_OK) == 0)
 		{
 			free_tab(exec_repo);
 			free_tab(cmd_searched);

@@ -18,6 +18,8 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 
 int			main(int argc, char **argv, char **env);
 char		*parent_process(int *p_fd, char **argv, char **env);
