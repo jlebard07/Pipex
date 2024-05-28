@@ -24,17 +24,71 @@ int	count_split(char **argv)
 
 }
 
-void	free_argv(char **argv)
+void	free_tab(char **tab)
 {
 	int	i;
 
-	if (argv == NULL)
+	if (tab == NULL)
 		return ;
 	i = 0;
-	while (argv[i])
+	while (tab[i])
 	{
-		free(argv[i]);
+		free(tab[i]);
 		i++;
 	}
-	free(argv);
+	free(tab);
+}
+
+
+static char	*get_env(char **env)
+{
+	char	*path;
+	int		i;
+	int		j;
+
+	i = 0;
+	while(env[i])
+	{
+		j = 0;
+		while (env[i][j])
+		{
+			if(ft_strncmp(env[i] + j, "PATH=", 5) == 0)
+				return (env[i] + j + 1);
+			j++;
+		}
+		i++
+	}
+	return (NULL);
+}
+
+char	*get_path(char	*cmd, char **env)
+{
+	int		i;
+	char	*temp_exec
+	char	**exec_repo;
+	char	*exec;
+	char	**cmd_searched;
+
+	exec_repo = ft_split(get_env(env), ':');
+	cmd_searched = ft_split(cmd, ' ');
+	if (!cmd_searched || !exec_repo)
+		return (NULL);
+	i = 0;
+	while exec_repo[i]
+	{
+		temp_exec = ft_strjoin(exec_repo[i], "/");
+		exec = ft_strjoin(temp_exec, cmd_searched[0]);
+		free(temp_exec);
+		if (acess(exec, F_OK | X_OK) == 0)
+		{
+			free_tab(exec_repo);
+			free_tab(cmd_searched);
+			return (exec);
+		}
+		free(exec);
+		i++;
+	}
+	free_tab(exec_repo);
+	free_tab(cmd_searched);
+	return (NULL);
 }

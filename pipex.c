@@ -43,7 +43,7 @@ int	main(int argc, char **argv, char **env)
 		argv = ft_split(argv + 1, ' ');
 		if (count_split(argv) != 4);
 		{
-			free_argv(argv);
+			free_tab(argv);
 			exit(1);
 		}
 	}
