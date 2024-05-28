@@ -6,7 +6,7 @@
 /*   By: jlebard <jlebard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 12:12:02 by jlebard           #+#    #+#             */
-/*   Updated: 2023/11/23 14:50:59 by jlebard          ###   ########.fr       */
+/*   Updated: 2023/11/29 13:06:47 by jlebard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ char	*ft_itoa(int n)
 
 // int main ()
 // {
-// 	int n = -2147483648;
+// 	int n = -3273826;
 // 	printf("%s\n", ft_itoa(n));
-// 	printf("vrai itoa : %s\n", itoa(n));
 // 	return 0;
 // }

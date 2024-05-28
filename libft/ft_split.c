@@ -6,7 +6,7 @@
 /*   By: jlebard <jlebard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 12:13:09 by jlebard           #+#    #+#             */
-/*   Updated: 2023/11/27 10:55:27 by jlebard          ###   ########.fr       */
+/*   Updated: 2023/11/29 13:06:46 by jlebard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	words = ft_count_words(s, c);
 	dest = (char **)malloc(sizeof(char *) * (words + 1));
+	if (!dest)
+		return (NULL);
 	dest[words] = NULL;
 	if (ft_write_split(dest, s, c) == -1)
 	{

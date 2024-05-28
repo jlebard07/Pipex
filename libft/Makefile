@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makfile                                            :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jlebard <jlebard@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/20 12:15:54 by jlebard           #+#    #+#              #
-#    Updated: 2023/11/22 13:30:45 by jlebard          ###   ########.fr        #
+#    Updated: 2023/12/01 15:53:57 by jlebard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ ft_split.c ft_strchr.c ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c \
 ft_strlcpy.c ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c \
 ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c
 OBJ = $(SRC:.c=.o)
-CC = gcc
+CC = cc
 CCFLAGS = -Wall -Wextra -Werror
 AR = ar rcs
 
@@ -33,12 +33,6 @@ ifeq ($(WINDOWS), yes)
 	FCLEAN = del /Q 
 else 
 	FCLEAN = rm -f 
-endif
-
-ifeq ($(WINDOWS), yes)
-	RE = del /Q all
-else 
-	RE = rm -f all
 endif
 
 %.o : %.c
@@ -55,5 +49,4 @@ clean:
 fclean:	clean
 	$(FCLEAN) $(NAME)
 
-re:	fclean
-	$(RE)
+re:	fclean all

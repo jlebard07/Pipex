@@ -6,7 +6,7 @@
 /*   By: jlebard <jlebard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 12:15:18 by jlebard           #+#    #+#             */
-/*   Updated: 2023/11/20 12:15:20 by jlebard          ###   ########.fr       */
+/*   Updated: 2023/11/29 13:06:44 by jlebard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	while (s[i + k] && k < (unsigned int)len)
 		k++;
 	dest = malloc(k * sizeof(char) + 1);
+	if (!dest)
+		return (NULL);
 	k = 0;
 	if (s != NULL)
 	{

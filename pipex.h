@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlebard <jlebard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jlebard <jlebard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 19:18:45 by jlebard            #+#    #+#             */
-/*   Updated: 2024/05/26 19:18:45 by jlebard           ###   ########.fr       */
+/*   Created: 2024/05/28 15:30:03 by jlebard           #+#    #+#             */
+/*   Updated: 2024/05/28 15:30:03 by jlebard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <ftncl.h>
+# include <fcntl.h>
+# include <errno.h>
 
-char		**ft_split(char *s, char c);
-int			main(int argc, char **argv);
-char		*child_process(int fd, char **argv);
+int			main(int argc, char **argv, char **env);
+char		*parent_process(int *p_fd, char **argv, char **env);
+char		*child_process(int *p_fd, char **argv, char **env);
+void		free_tab(char **tab);
+int			count_split(char **argv);
+void		display_error(void);
 
 #endif
