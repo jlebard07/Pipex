@@ -12,20 +12,13 @@
 
 #include "pipex.h"
 
-int	count_split(char **argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i])
-		i++;
-	return (i);
-}
-
 void	display_error(void)
 {
-	ft_putstr_fd("Error :", 2);
-	ft_putstr_fd(strerror(errno), 2);
+	int	save_errno;
+
+	save_errno = errno;
+	ft_putstr_fd("Type d'erreur :", 2);
+	ft_putstr_fd(strerror(save_errno), 2);
 	write(2, "\n", 1);
 	exit(EXIT_FAILURE);
 }
@@ -47,7 +40,6 @@ void	free_tab(char **tab)
 
 static char	*get_env(char **env)
 {
-	char	*path;
 	int		i;
 	int		j;
 

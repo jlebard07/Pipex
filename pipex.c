@@ -18,7 +18,7 @@ void	exec(char *cmd, char **env)
 	char	*path;
 
 	cmd_exec = ft_split(cmd, ' ');
-	path = get_path(cmd_exec[0]);
+	path = get_path(cmd_exec[0], env);
 	if (path == NULL)
 		display_error();
 	if (execve(path, cmd_exec, NULL) == -1)
@@ -29,11 +29,13 @@ void	exec(char *cmd, char **env)
 	}
 }
 
-char	*child_process(int *p_fd, char **argv, char **env)
+void	child_process(int *p_fd, char **argv, char **env)
 {
 	int	fd;
 
 	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		display_error();
 	dup2(fd, STDIN_FILENO);
 	dup2(p_fd[1], STDOUT_FILENO);
 	close(p_fd[0]);
@@ -42,12 +44,13 @@ char	*child_process(int *p_fd, char **argv, char **env)
 	exec(argv[2], env);
 }
 
-char	*parent_process(int *p_fd, char **argv, char **env)
+void	parent_process(int *p_fd, char **argv, char **env)
 {
 	int	fd;
 
-	fd = open(argv[4], O_CREATE | O_WRONLY | O_TRUNC)
-	if (fd > 0)
+	fd = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if (fd  == -1)
+		display_error();
 	dup2(p_fd[0], STDOUT_FILENO);
 	dup2(fd, STDOUT_FILENO);
 	close(p_fd[0]);
@@ -66,10 +69,17 @@ int	main(int argc, char **argv, char **env)
 	if (pipe(p_fd) == -1)
 		display_error();
 	pid = fork();
-	if (pid == -1)
+	if (pid < 0)
 		display_error();
 	if (pid == 0)
+	{
+		close (p_fd[0]);
 		child_process(p_fd, argv, env);
+	}
 	else if (pid != 0)
+	{
+		close(p_fd[1]);
+		wait(NULL);
 		parent_process(p_fd, argv, env);
+	}		
 }

@@ -20,12 +20,13 @@
 # include <errno.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 
-int			main(int argc, char **argv, char **env);
-char		*parent_process(int *p_fd, char **argv, char **env);
-char		*child_process(int *p_fd, char **argv, char **env);
-void		free_tab(char **tab);
-int			count_split(char **argv);
-void		display_error(void);
+int		main(int argc, char **argv, char **env);
+void	parent_process(int *p_fd, char **argv, char **env);
+void	child_process(int *p_fd, char **argv, char **env);
+void	free_tab(char **tab);
+void	display_error(void);
+char	*get_path(char	*cmd, char **env);
 
 #endif
