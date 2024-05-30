@@ -19,20 +19,17 @@ void	exec(char *cmd, char **env)
 
 	cmd_exec = ft_split(cmd, ' ');
 	if (cmd_exec == NULL)
-		display_error();
-	path = get_path(cmd_exec[0], env);
-	if (path == NULL)
 	{
-		free_tab(cmd_exec);
-		display_error();
+		ft_putstr_fd("Aucune commande n'est entrée\n", 2);
+		exit(1);
 	}
+	path = get_path(cmd_exec[0], env);
 	if (execve(path, cmd_exec, NULL) == -1)
 	{
 		free(path);
 		free_tab(cmd_exec);
 		display_error();
 	}
-	write(2, "test", 4);
 }
 
 void	child_process(int *p_fd, char **argv, char **env)
@@ -41,7 +38,11 @@ void	child_process(int *p_fd, char **argv, char **env)
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		display_error();
+	{
+		ft_putstr_fd("Echec lors de l'ouverture d'un fichier\n", 2);
+		close(p_fd[1]);
+		exit(1);
+	}
 	dup2(fd, STDIN_FILENO);
 	dup2(p_fd[1], STDOUT_FILENO);
 	close(p_fd[1]);
@@ -55,7 +56,11 @@ void	parent_process(int *p_fd, char **argv, char **env)
 
 	fd = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (fd == -1)
-		display_error();
+	{
+		ft_putstr_fd("Echec lors de l'ouverture d'un fichier\n", 2);
+		close(p_fd[0]);
+		exit(1);
+	}
 	dup2(p_fd[0], STDIN_FILENO);
 	dup2(fd, STDOUT_FILENO);
 	close(p_fd[0]);

@@ -17,7 +17,7 @@ void	display_error(void)
 	int	save_errno;
 
 	save_errno = errno;
-	ft_putstr_fd("Type d'erreur :", 2);
+	ft_putstr_fd("Error : ", 2);
 	ft_putstr_fd(strerror(save_errno), 2);
 	write(2, "\n", 1);
 	exit(1);
@@ -31,13 +31,11 @@ void	free_tab(char **tab)
 	if (tab == NULL)
 		return ;
 	while (tab[i])
-		i++;
-	while (i > 0)
 	{
-		i--;
-		free (tab[i]);
+		free(tab[i]);
+		i++;
 	}
-	free(tab);
+	free(tab);	
 }
 
 static char	*get_env(char **env)
@@ -77,11 +75,7 @@ char	*get_path(char	*cmd, char **env)
 		exec = ft_strjoin(temp_exec, cmd_searched[0]);
 		free(temp_exec);
 		if (access(exec, F_OK | X_OK) == 0)
-		{
-			free_tab(exec_repo);
-			free_tab(cmd_searched);
 			return (exec);
-		}
 		free(exec);
 		i++;
 	}
