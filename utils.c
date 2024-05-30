@@ -20,7 +20,7 @@ void	display_error(void)
 	ft_putstr_fd("Type d'erreur :", 2);
 	ft_putstr_fd(strerror(save_errno), 2);
 	write(2, "\n", 1);
-	exit(EXIT_FAILURE);
+	exit(1);
 }
 
 void	free_tab(char **tab)
@@ -31,9 +31,11 @@ void	free_tab(char **tab)
 	if (tab == NULL)
 		return ;
 	while (tab[i])
-	{
-		free(tab[i]);
 		i++;
+	while (i > 0)
+	{
+		i--;
+		free (tab[i]);
 	}
 	free(tab);
 }
@@ -41,18 +43,12 @@ void	free_tab(char **tab)
 static char	*get_env(char **env)
 {
 	int		i;
-	int		j;
 
 	i = 0;
 	while (env[i])
 	{
-		j = 0;
-		while (env[i][j])
-		{
-			if (ft_strncmp(env[i] + j, "PATH=", 5) == 0)
-				return (env[i] + j + 1);
-			j++;
-		}
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
+			return (env[i] + 5);
 		i++;
 	}
 	return (NULL);
@@ -69,7 +65,11 @@ char	*get_path(char	*cmd, char **env)
 	exec_repo = ft_split(get_env(env), ':');
 	cmd_searched = ft_split(cmd, ' ');
 	if (!cmd_searched || !exec_repo)
+	{
+		free(exec_repo);
+		free(cmd_searched);
 		return (NULL);
+	}
 	i = 0;
 	while (exec_repo[i])
 	{

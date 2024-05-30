@@ -18,15 +18,21 @@ void	exec(char *cmd, char **env)
 	char	*path;
 
 	cmd_exec = ft_split(cmd, ' ');
+	if (cmd_exec == NULL)
+		display_error();
 	path = get_path(cmd_exec[0], env);
 	if (path == NULL)
+	{
+		free_tab(cmd_exec);
 		display_error();
+	}
 	if (execve(path, cmd_exec, NULL) == -1)
 	{
 		free(path);
 		free_tab(cmd_exec);
 		display_error();
 	}
+	write(2, "test", 4);
 }
 
 void	child_process(int *p_fd, char **argv, char **env)
@@ -38,7 +44,6 @@ void	child_process(int *p_fd, char **argv, char **env)
 		display_error();
 	dup2(fd, STDIN_FILENO);
 	dup2(p_fd[1], STDOUT_FILENO);
-	close(p_fd[0]);
 	close(p_fd[1]);
 	close(fd);
 	exec(argv[2], env);
@@ -49,12 +54,11 @@ void	parent_process(int *p_fd, char **argv, char **env)
 	int	fd;
 
 	fd = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	if (fd  == -1)
+	if (fd == -1)
 		display_error();
-	dup2(p_fd[0], STDOUT_FILENO);
+	dup2(p_fd[0], STDIN_FILENO);
 	dup2(fd, STDOUT_FILENO);
 	close(p_fd[0]);
-	close(p_fd[1]);
 	close(fd);
 	exec(argv[3], env);
 }
