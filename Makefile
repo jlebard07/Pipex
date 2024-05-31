@@ -1,7 +1,7 @@
 NAME = pipex
-SRC = pipex.c utils.c
+SRC = pipex.c utils.c split_if_quote.c
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 OBJS = $(SRC:.c=.o)
 CLEAN = rm -rf
 FCLEAN = rm -f

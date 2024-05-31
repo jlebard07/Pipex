@@ -12,18 +12,42 @@
 
 #include "pipex.h"
 
+int	count_quote(char *cmd)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == 39)
+			j++;
+		i++;
+	}
+	return (j);
+}
+
 void	exec(char *cmd, char **env)
 {
 	char	**cmd_exec;
 	char	*path;
 
-	cmd_exec = ft_split(cmd, ' ');
+	if (count_quote(cmd) == 0)
+		cmd_exec = ft_split(cmd, ' ');
+	else
+		cmd_exec = split_if_quote(cmd);
 	if (cmd_exec == NULL)
 	{
-		ft_putstr_fd("Aucune commande n'est entrée\n", 2);
+		ft_putstr_fd("Mauvais format de commande\n", 2);
 		exit(1);
 	}
 	path = get_path(cmd_exec[0], env);
+	if (path == NULL)
+	{
+		free_tab(cmd_exec);
+		display_error();
+	}
 	if (execve(path, cmd_exec, NULL) == -1)
 	{
 		free(path);
@@ -54,7 +78,7 @@ void	parent_process(int *p_fd, char **argv, char **env)
 {
 	int	fd;
 
-	fd = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	fd = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0755);
 	if (fd == -1)
 	{
 		ft_putstr_fd("Echec lors de l'ouverture d'un fichier\n", 2);

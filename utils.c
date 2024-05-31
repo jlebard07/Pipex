@@ -35,7 +35,7 @@ void	free_tab(char **tab)
 		free(tab[i]);
 		i++;
 	}
-	free(tab);	
+	free(tab);
 }
 
 static char	*get_env(char **env)
@@ -52,34 +52,38 @@ static char	*get_env(char **env)
 	return (NULL);
 }
 
-char	*get_path(char	*cmd, char **env)
+static char	*get_access(char **exec_repo, char *cmd)
 {
-	int		i;
-	char	*temp_exec;
-	char	**exec_repo;
 	char	*exec;
-	char	**cmd_searched;
+	char	*temp_exec;
+	int		i;
 
-	exec_repo = ft_split(get_env(env), ':');
-	cmd_searched = ft_split(cmd, ' ');
-	if (!cmd_searched || !exec_repo)
-	{
-		free(exec_repo);
-		free(cmd_searched);
-		return (NULL);
-	}
 	i = 0;
 	while (exec_repo[i])
 	{
 		temp_exec = ft_strjoin(exec_repo[i], "/");
-		exec = ft_strjoin(temp_exec, cmd_searched[0]);
+		exec = ft_strjoin(temp_exec, cmd);
 		free(temp_exec);
 		if (access(exec, F_OK | X_OK) == 0)
 			return (exec);
 		free(exec);
 		i++;
 	}
-	free_tab(exec_repo);
-	free_tab(cmd_searched);
 	return (NULL);
+}
+
+char	*get_path(char	*cmd, char **env)
+{
+	char	**exec_repo;
+	char	*exec;
+
+	exec_repo = ft_split(get_env(env), ':');
+	if (!cmd || !exec_repo)
+	{
+		free(exec_repo);
+		return (NULL);
+	}
+	exec = get_access(exec_repo, cmd);
+	free_tab(exec_repo);
+	return (exec);
 }

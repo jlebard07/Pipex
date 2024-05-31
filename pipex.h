@@ -28,5 +28,7 @@ void	child_process(int *p_fd, char **argv, char **env);
 void	free_tab(char **tab);
 void	display_error(void);
 char	*get_path(char	*cmd, char **env);
+char	**split_if_quote(char *str);
+int		count_quote(char *cmd);
 
 #endif
